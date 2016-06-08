@@ -4,7 +4,9 @@ package gp
 // #include <gphoto2/gphoto2.h>
 // #include <string.h>
 import "C"
-import "unsafe"
+import (
+	"unsafe"
+)
 
 const (
 	FILE_TYPE_PREVIEW = C.GP_FILE_TYPE_PREVIEW
@@ -23,9 +25,15 @@ type CameraFilePath struct {
 	Folder string
 }
 
+
+
 func (file *CameraFile) Save(name string) error {
 	_file := (*C.CameraFile)(unsafe.Pointer(file))
 	_name := C.CString(name)
+	//var _type CameraFile
+	//_type := *file
+	//fmt.Printf("%s\n", _type)
+
 	if ret := C.gp_file_save(_file, _name); ret != 0 {
 		return e(ret)
 	}
